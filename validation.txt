@@ -1,0 +1,2 @@
+Usuario o Contraseña no son valida.
+Este usuario no esta registrado en nuestra base de datos.
