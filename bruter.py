@@ -11,14 +11,14 @@ import requests
 def login(url, user, password, validation_errors, error_key='message', torify=False):
     headers = {'Accept': 'application/json, text/plain, */*',
                'Content-Type': 'application/json;charset=utf-8',
+               'Accept-Encoding': 'gzip, deflate, br',
                'Connection': 'keep-alive',
-               'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; rv:52.0) Gecko/20100101 Firefox/52.0',
-               'Accept-Language': 'en-US,en;q=0.5'
+               'Accept-Language': 'en-US,en;q=0.5',
                }
     proxy_address = '127.0.0.1'
     proxy_port = 9050
 
-    authentication = {'user_name': user, 'password': password}
+    authentication = {'name': user, 'password': password}
     session = requests.session()
     if torify:
         session.proxies = {'http': "socks5h://{}:{}".format(proxy_address, proxy_port),
@@ -27,6 +27,7 @@ def login(url, user, password, validation_errors, error_key='message', torify=Fa
     attempt = session.post(url=url, json=authentication,
                            headers=headers)
     response = attempt.json()
+
     if attempt.status_code is 200 and response[error_key] not in validation_errors:
         return True
     return False
